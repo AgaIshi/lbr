@@ -1,6 +1,22 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package LBR FRI ROS 2 Stack
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Humble v2.2.1 (2025-03-26)
+--------------------------
+* ``lbr_bringup``: Removed static broadcasters from launch files: https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/264
+* ``lbr_description``:
+
+  * Decimate collision meshes for faster Gazebo simulation: https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/262
+  * Added world link to ``xacro`` files (fixes robot to Gazebo world): https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/264
+* ``lbr_demos_cpp``: Added missing robot name prefix to joint names: https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/258
+* ``lbr_demos_py``: Added missing robot name prefix to joint names: https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/259
+* ``lbr_ros2_control``: Update deprecated headers https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/267, https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/269
+* ``lbr_fri_ros2``: Fixes for compliant control modes.
+
+  * Fixed a bug that wouldn't forward torques / wrenches: https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/233
+  * Enforce ``open_loop=false`` (position) for compliant controllers: https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/237 
+* ``lbr_fri_ros2_stack``: Repositories file for FRI 2.6: https://github.com/lbr-stack/lbr_fri_ros2_stack/pull/248
+
 Humble v2.2.0 (2024-11-20)
 --------------------------
 This release backports new ``rolling`` features to ``humble``. Following has changed:
