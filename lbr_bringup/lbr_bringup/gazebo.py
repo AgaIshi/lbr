@@ -5,7 +5,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-
+from launch.actions import ExecuteProcess
 
 class GazeboMixin:
     @staticmethod
@@ -56,6 +56,21 @@ class GazeboMixin:
             package="ros_gz_bridge",
             executable="parameter_bridge",
             arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"],
+            output="screen",
+            **kwargs,
+        )
+    @staticmethod
+    def node_static_box(**kwargs):
+        return ExecuteProcess(
+            cmd=[
+                "ros2", "run", "gazebo_ros", "spawn_entity.py",
+                "-entity", "static_box",
+                "-file", PathJoinSubstitution([
+                    FindPackageShare("lbr_description"),
+                    "gazebo",
+                    "box.sdf"
+                ]),
+            ],
             output="screen",
             **kwargs,
         )
