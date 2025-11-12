@@ -28,7 +28,15 @@ def generate_launch_description() -> LaunchDescription:
     )  # Do not condition robot state publisher on joint state broadcaster as Gazebo uses robot state publisher to retrieve robot description
 
     # Gazebo
-    ld.add_action(GazeboMixin.include_gazebo())  # Gazebo has its own controller manager
+    # ld.add_action(GazeboMixin.include_gazebo())  # Gazebo has its own controller manager
+    world_file = "/home/ishita/trial_ws/src/lbr-stack/lbr_fri_ros2_stack/lbr_description/gazebo/e.sdf"
+
+    ld.add_action(
+        ExecuteProcess(
+            cmd=['ros2', 'launch', 'ros_gz_sim', 'gz_sim.launch.py', 'world:=' + world_file],
+            output='screen'
+        )
+    )
     ld.add_action(GazeboMixin.node_clock_bridge())
     ld.add_action(
         GazeboMixin.node_create()

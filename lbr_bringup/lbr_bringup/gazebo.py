@@ -7,9 +7,35 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.actions import ExecuteProcess
 
+# class GazeboMixin:
+#     @staticmethod
+#     def include_gazebo(**kwargs) -> IncludeLaunchDescription:
+#         return IncludeLaunchDescription(
+#             PythonLaunchDescriptionSource(
+#                 PathJoinSubstitution(
+#                     [
+#                         FindPackageShare("ros_gz_sim"),
+#                         "launch",
+#                         "gz_sim.launch.py",
+#                     ]
+#                 ),
+#             ),
+#             launch_arguments={"gz_args": "-r empty.sdf"}.items(),
+#             **kwargs,
+#         )
 class GazeboMixin:
     @staticmethod
-    def include_gazebo(**kwargs) -> IncludeLaunchDescription:
+    def include_gazebo(world_file: str, **kwargs) -> IncludeLaunchDescription:
+        world_path = PathJoinSubstitution(
+            [
+                FindPackageShare("lbr_description"), # Package where e.sdf lives
+                "gazebo",
+                world_file,
+            ]
+        )
+        
+        gz_args_value = ["-r ", world_path]
+        
         return IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 PathJoinSubstitution(
@@ -20,10 +46,10 @@ class GazeboMixin:
                     ]
                 ),
             ),
-            launch_arguments={"gz_args": "-r empty.sdf"}.items(),
+            # Pass the path to the custom world file
+            launch_arguments={"gz_args": gz_args_value}.items(),
             **kwargs,
         )
-
     @staticmethod
     def node_create(
         robot_name: Optional[Union[LaunchConfiguration, str]] = LaunchConfiguration(
@@ -59,18 +85,18 @@ class GazeboMixin:
             output="screen",
             **kwargs,
         )
-    @staticmethod
-    def node_static_box(**kwargs):
-        return ExecuteProcess(
-            cmd=[
-                "ros2", "run", "gazebo_ros", "spawn_entity.py",
-                "-entity", "static_box",
-                "-file", PathJoinSubstitution([
-                    FindPackageShare("lbr_description"),
-                    "gazebo",
-                    "box.sdf"
-                ]),
-            ],
-            output="screen",
-            **kwargs,
-        )
+    # @staticmethod
+    # def node_static_box(**kwargs):
+    #     return ExecuteProcess(
+    #         cmd=[
+    #             "ros2", "run", "gazebo_ros", "spawn_entity.py",
+    #             "-entity", "static_box",
+    #             "-file", PathJoinSubstitution([
+    #                 FindPackageShare("lbr_description"),
+    #                 "gazebo",
+    #                 "box.sdf"
+    #             ]),
+    #         ],
+    #         output="screen",
+    #         **kwargs,
+    #     )
